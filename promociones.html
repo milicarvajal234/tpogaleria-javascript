@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Promociones | Tecno Galería</title>
+
+  <!-- Reutilizo tus estilos globales -->
+  <link rel="stylesheet" href="css/estiloscolores.css">
+
+  <!-- Ajustes mínimos locales (manteniendo la paleta: #2f2f2f, #0e7c86, #d9b24c, #f5f5f5) -->
+  <style>
+    :root{
+      --brand:#2f2f2f;
+      --accent:#0e7c86;
+      --gold:#d9b24c;
+      --soft:#f5f5f5;
+    }
+    body{ background:#fff; color:var(--brand); line-height:1.4; }
+    .wrap{ max-width: 980px; margin: 0 auto; padding: 1.25rem; }
+    header.page-header{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; }
+    .title{ font-size: clamp(1.4rem, 1.6vw + 1rem, 2.2rem); font-weight: 800; color: var(--brand); }
+    .desc{ color:#374151; }
+    .card{ background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:1rem; box-shadow: 0 8px 16px rgba(0,0,0,.04); }
+    .grid{ display:grid; gap:1rem; }
+    @media(min-width:900px){ .grid{ grid-template-columns: 1.1fr .9fr; } }
+    label{ font-weight:600; }
+    select, input, button{ font-size:1rem; }
+    .field{ display:grid; gap:.4rem; margin-bottom:.75rem; }
+    .btn{ background:var(--gold); color:#1f2937; border:none; padding:.6rem 1rem; border-radius:10px; cursor:pointer; font-weight:700; }
+    .btn:hover{ filter: brightness(1.03); }
+    .muted{ color:#6b7280; font-size:.95rem; }
+    table{ width:100%; border-collapse: collapse; }
+    th, td{ padding:.6rem; border-bottom:1px solid #e5e7eb; }
+    th{ text-align:left; color:#374151; font-weight:700; }
+    td.right{ text-align:right; }
+    #estadoVacio{ display:none; padding: .8rem; background: var(--soft); border-radius: 12px; }
+    .totales{ display:grid; gap:.4rem; }
+    .totales .row{ display:flex; justify-content:space-between; }
+    .result{ font-size:1.25rem; font-weight:800; color:#0a7a48; }
+    .promo-box{ background:#eefbfd; border:1px solid #b9e7ef; border-radius:12px; padding:.8rem; }
+    .footer-help{ margin-top:1rem; font-size:.95rem; color:#374151; }
+    .promo-help{ font-size:.95rem; color:#1f2937; }
+    .sr-only{ position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden; }
+    a{ color:var(--accent); }
+  </style>
+</head>
+<body>
+  <header class="page-header wrap">
+    <div>
+      <h1 class="title">Promociones vigentes</h1>
+      <p class="desc">Elegí tus accesorios o servicios y mirá cuánto ahorrás en Tecno Galería.</p>
+    </div>
+    <nav aria-label="Principal">
+      <a href="index.html">Inicio</a> ·
+      <a href="productos.html">Productos</a> ·
+      <strong>Promociones</strong>
+    </nav>
+  </header>
+
+  <main class="wrap grid" id="contenido">
+    <!-- Columna izquierda: formulario + carrito -->
+    <section aria-labelledby="ingreso" class="card">
+      <h2 id="ingreso">Armá tu compra</h2>
+      <form id="promoForm">
+        <div class="field">
+          <label for="producto">Producto o servicio</label>
+          <select id="producto" name="producto" required></select>
+        </div>
+
+        <div class="field">
+          <label for="cantidad">Cantidad</label>
+          <input type="number" id="cantidad" name="cantidad" min="1" value="1" required>
+        </div>
+
+        <button class="btn" id="agregarBtn">Agregar al carrito</button>
+
+        <p class="footer-help muted">Podés editar cantidades o eliminar líneas desde la tabla de abajo.</p>
+
+        <h3>Carrito</h3>
+        <div id="estadoVacio" class="muted">Todavía no agregaste nada. Sumá tu primer producto 🙌</div>
+        <div class="table-wrap" role="region" aria-label="Tabla de carrito">
+          <table id="tablaCarrito">
+            <thead>
+              <tr>
+                <th>Producto/Servicio</th>
+                <th>Precio unit.</th>
+                <th style="width:130px">Cantidad</th>
+                <th class="right">Subtotal línea</th>
+                <th class="right">Quitar</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </form>
+    </section>
+
+    <!-- Columna derecha: promociones + resultados -->
+    <aside class="card" aria-labelledby="promos">
+      <h2 id="promos">Elegí una promoción</h2>
+
+      <fieldset class="promo-box">
+        <legend>Promos disponibles</legend>
+
+        <div class="field">
+          <input type="radio" id="p1" name="promo" value="50segundo" checked>
+          <label for="p1">Llevá 2 y pagá 50% en el segundo</label>
+          <p class="promo-help">Por cada par del mismo producto, el segundo sale a mitad de precio.</p>
+        </div>
+
+        <div class="field">
+          <input type="radio" id="p2" name="promo" value="3x2">
+          <label for="p2">3x2 en seleccionados</label>
+          <p class="promo-help">Por cada 3 unidades del mismo producto, una es sin cargo.</p>
+        </div>
+
+        <div class="field">
+          <input type="radio" id="p3" name="promo" value="10umbral">
+          <label for="p3">10% de descuento desde $30.000</label>
+          <p class="promo-help">Si tu subtotal supera el umbral, aplicamos el 10% a todo el carro.</p>
+        </div>
+
+        <div class="field">
+          <input type="radio" id="p0" name="promo" value="ninguna">
+          <label for="p0">Sin promoción</label>
+        </div>
+      </fieldset>
+
+      <div class="totales" aria-live="polite" aria-atomic="true">
+        <div class="row"><span>Subtotal (sin descuento)</span> <strong id="subtotal">$0</strong></div>
+        <div class="row"><span>Descuento</span> <strong id="descuento">− $0</strong></div>
+        <div class="row result"><span>Total a pagar</span> <strong id="total">$0</strong></div>
+      </div>
+
+      <p id="detallePromo" class="muted" style="margin-top:.4rem;"></p>
+      <div id="liveRegion" class="sr-only" role="status" aria-live="assertive"></div>
+    </aside>
+  </main>
+
+  <footer class="wrap muted" style="margin-top:1rem">
+  
+  </footer>
+
+  <script src="promociones.js"></script>
+</body>
+</html>
